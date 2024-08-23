@@ -37,6 +37,12 @@ import {
   sendEmailRecoveryPassword,
 } from "../generalFiles/sendEmails.js";
 
+import { config } from "dotenv";
+
+config();
+
+const BACK_URL = process.env.BACK_URL;
+
 import fs from "fs/promises";
 
 import path from "path";
@@ -154,7 +160,7 @@ export const changeAvatarController = async (req, res, next) => {
   const nameFile = `${id}_avatar.${typeFile}`;
   const avatarSrc = path.join(__dirname, `../public/avatars/${nameFile}`);
 
-  const avatarURL = `http://localhost:3100/api/avatars/${nameFile}`;
+  const avatarURL = `${BACK_URL}avatars/${nameFile}`;
 
   try {
     if (typeFile !== "png" && typeFile !== "jpeg") {

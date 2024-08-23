@@ -21,6 +21,12 @@ import {
   cancelledByUserOrderSchema,
 } from "../schemas/ordersSchemas.js";
 
+import { config } from "dotenv";
+
+config();
+
+const BACK_URL = process.env.BACK_URL;
+
 import { sendEmailForOwnerCreateOrder } from "../generalFiles/sendEmails.js";
 
 import HttpError from "../generalFiles/HttpError.js";
@@ -83,7 +89,7 @@ export const registerOrderController = async (req, res, next) => {
 
       const nameFile = `${Date.now()}_${originalname}`;
       const fileSrc = path.join(__dirname, `../public/orders/${nameFile}`);
-      const fileUrl = `http://localhost:3100/api/orders/${nameFile}`;
+      const fileUrl = `${BACK_URL}orders/${nameFile}`;
       fs.rename(temporaryName, fileSrc);
       files.push(fileUrl);
       attachments.push({ filename: nameFile, path: fileUrl });
