@@ -25,7 +25,7 @@ export const sendEmailVerification = async (email, token) => {
       html: `<h2>Děkujeme za registraci na naši stránce</h2> <p>Prosím, ověřte svůj e-mailovou adresu.</p> <a href="http://localhost:3000/verify/${token}">Ověřit email!</a>`,
     };
 
-    transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);
   } catch (error) {
     console.log(error);
   }
@@ -41,7 +41,7 @@ export const sendEmailRecoveryPassword = async (email, token) => {
       html: `<p>Pro obnovení hesla stačí kliknout na <a href="http://localhost:3000/password/${token}">Obnovit heslo</a>.</p>`,
     };
 
-    transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);
   } catch (error) {
     console.log(error);
   }
@@ -69,7 +69,8 @@ export const sendEmailForOwnerCreateOrder = async (
       attachments,
     };
 
-    transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);
+
   } catch (error) {
     console.log(error);
   }
@@ -93,7 +94,7 @@ export const sendEmailCreatePassword = async (email, token) => {
       html: `<a href="http://localhost:3000/api/users/${token}">Register account</a>`,
     };
 
-    transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);
   } catch (error) {
     console.log(error);
   }
@@ -117,7 +118,7 @@ export const sendEmailCreateOrder = async (email) => {
       html: "<p>Thank</p>",
     };
 
-    transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);
   } catch (error) {
     console.log(error);
   }
@@ -141,7 +142,7 @@ export const sendEmailCreateReviews = async () => {
       html: "<p>You have a new review</p>",
     };
 
-    transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);
   } catch (error) {
     console.log(error);
   }
