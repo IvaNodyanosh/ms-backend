@@ -16,6 +16,12 @@ export const changePhotoMessageSchema = Joi.object({
   comment: Joi.string(),
 });
 
+export const getMediaReviewSchema = Joi.object({
+  filter: Joi.string(),
+  page: Joi.number(),
+  pageSize: Joi.number(),
+});
+
 const review = new Schema({
   orderId: {
     type: Schema.Types.ObjectId,
@@ -25,8 +31,8 @@ const review = new Schema({
     type: Array,
   },
   comment: {
-    type: String
-  }
+    type: String,
+  },
 });
 
 export const Review = model("review", review);

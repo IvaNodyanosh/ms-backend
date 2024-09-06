@@ -30,12 +30,16 @@ export async function getOrders(userId, statusUser, page, pageSize) {
   const skipDocuments = (page - 1) * pageSize;
   if (statusUser === "owner") {
     const totalItems = await Order.countDocuments();
-    const orders = await Order.find().skip(skipDocuments).limit(pageSize);
+    const orders = await Order.find()
+      .sort({ _id: -1 })
+      .skip(skipDocuments)
+      .limit(pageSize);
 
     return { totalItems, orders };
   } else {
     const totalItems = await Order.countDocuments({ userId });
     const orders = await Order.find({ userId })
+      .sort({ _id: -1 })
       .skip(skipDocuments)
       .limit(pageSize);
 

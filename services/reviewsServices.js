@@ -1,11 +1,9 @@
 import { Order } from "../schemas/ordersSchemas.js";
 import { Review } from "../schemas/reviewsSchemas.js";
 import HttpError from "../generalFiles/HttpError.js";
-import { User } from "../schemas/usersSchemas.js";
 
-export async function createReview(orderId, comment, files) {
+export async function createReview(user, orderId, comment, files) {
   const order = await Order.findById(orderId);
-  const user = await User.findById(order.userId);
 
   if (user.statusUser === "block") {
     throw HttpError(403, "user is blocked");
@@ -28,4 +26,23 @@ export async function createReview(orderId, comment, files) {
       files,
     });
   }
+}
+
+export async function getMediaReview(filter, page, pageSize) {
+  const reviews = await Review.find();
+
+  const data = [];
+
+  const per = (page - 1) * pageSize;
+  const last = per + Number(pageSize);
+
+  console.log({ per, last, page });
+
+  reviews.map(function (review) {
+    if (review.comment.includes(filter)) {
+      data.push(...review.files);
+    }
+  });
+
+  return { totalItems: data.length, items: data.slice(per, last) };
 }
