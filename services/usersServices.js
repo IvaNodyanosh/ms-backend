@@ -37,26 +37,40 @@ export async function register(userInform, verificationToken) {
 
 export async function login(userInform) {
   const { email, password } = userInform;
+
+  // Шукаємо користувача за email
   const user = await User.findOne({ "email.email": email });
 
+  // Якщо користувача не знайдено
+  if (!user) {
+    return "Email or password is wrong";
+  }
+
+  // Порівнюємо паролі
   const passwordCompare = await bcrypt.compare(password, user.password);
 
-  if (!user || !passwordCompare) {
-    throw HttpError(401, "Email or password is wrong");
+  // Якщо паролі не співпадають
+  if (!passwordCompare) {
+    return "Email or password is wrong";
   }
 
+  // Якщо електронна пошта не підтверджена
   if (!user.email.isVerify) {
-    throw HttpError(401, "Email is not verify");
+    return "Email is not verified";
   }
 
+  // Створюємо токен
   const payload = { id: user._id };
-
   const token = jsonwebtoken.sign(payload, SECRET_KEY, {
     expiresIn: "23h",
   });
 
-  return await User.findOneAndUpdate({ _id: user._id }, { token }, {new: true});
-  
+  // Оновлюємо користувача з новим токеном
+  return await User.findOneAndUpdate(
+    { _id: user._id },
+    { token },
+    { new: true }
+  );
 } //ok
 
 export async function logout(_id) {
@@ -279,4 +293,3 @@ export async function createPassword(token, password) {
 
   return data;
 }
-

@@ -27,7 +27,7 @@ export const fileTypeChecking = (typeFile) => {
     typeFile !== "wav" &&
     typeFile !== "wma" &&
     typeFile !== "wmv" &&
-    typeFile !== "mov" &&
+    typeFile !== "MOV" &&
     typeFile !== "m4v"
   );
 };

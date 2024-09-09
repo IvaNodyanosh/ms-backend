@@ -44,10 +44,12 @@ const connection = mongoose.connect(uriDb);
 
 connection
   .then(() => {
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
       console.log("Database connection successful");
     });
+
+    server.setTimeout(30 * 60 * 1000);
   })
   .catch((err) =>
     console.log(`Server not connection. Error message: ${err.message}`)
-);
+  );

@@ -79,17 +79,22 @@ export const loginController = async (req, res, next) => {
       throw HttpError(400, error.message);
     }
 
-    const { name, surname, avatarUrl, statusUser, token } = await login(
-      req.body
-    );
+    const data = await login(req.body);
 
-    res.status(200).json({
-      name,
-      surname,
-      avatarUrl,
-      statusUser,
-      token,
-    });
+    if (data === "Email or password is wrong") {
+      throw HttpError(401, "Email or password is wrong");
+    } else if (data === "Email is not verify") {
+      throw HttpError(401, "Email is not verify");
+    } else if (data.statusUser) {
+      const { name, surname, avatarUrl, statusUser, token } = data;
+      res.status(200).json({
+        name,
+        surname,
+        avatarUrl,
+        statusUser,
+        token,
+      });
+    }
   } catch (error) {
     next(error);
   }
